@@ -86,6 +86,7 @@ fn format_args_f (input: TokenStream) -> TokenStream
     let s = format_literal.value();
     let ref mut out_format_literal = String::with_capacity(s.len());
 
+    // char_indices returns index and char.
     let mut iterator = s.char_indices().peekable();
     while let Some((i, c)) = iterator.next() {
         out_format_literal.push(c);
@@ -127,7 +128,7 @@ fn format_args_f (input: TokenStream) -> TokenStream
             continue;
         }
 
-        enum Segment { Ident(Ident), LitInt(LitInt) }
+        enum Segment { Ident(Ident), LitInt(LitInt), Self_(Token![self]) }
         let segments: Vec<Segment> = {
             impl Parse for Segment {
                 fn parse (input: ParseStream<'_>)
@@ -138,6 +139,8 @@ fn format_args_f (input: TokenStream) -> TokenStream
                         input.parse().map(Segment::Ident)
                     } else if lookahead.peek(LitInt) {
                         input.parse().map(Segment::LitInt)
+                    } else if input.peek(Token![self]){
+                        input.parse().map(Segment::Self_)
                     } else {
                         Err(lookahead.error())
                     }
@@ -174,6 +177,10 @@ fn format_args_f (input: TokenStream) -> TokenStream
                             ));
                         }
                     },
+                    | Segment::Self_(ident) => {
+                        // if `ident = ...` is not yet among the extra args
+                        continue;
+                    },
                 }
             },
             | _ => {
@@ -190,6 +197,9 @@ fn format_args_f (input: TokenStream) -> TokenStream
                             },
                             | Segment::LitInt(literal) => {
                                 literal.into_token_stream()
+                            },
+                            | Segment::Self_(self_) => {
+                                self_.into_token_stream()
                             },
                         })
                         .collect()

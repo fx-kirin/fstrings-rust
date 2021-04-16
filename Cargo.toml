@@ -1,14 +1,14 @@
 [package]
-name = "fstrings"
+name = "fstrings-rust"
 version = "0.2.2"
 authors = ["Daniel Henry-Mantilla <daniel.henry.mantilla@gmail.com>"]
 edition = "2018"
 
 license = "MIT"
 
-documentation = "https://docs.rs/fstrings"
-repository = "https://github.com/danielhenrymantilla/fstrings-rs"
-homepage = "https://crates.io/crates/fstrings"
+documentation = "https://docs.rs/fstrings-rust"
+repository = "https://github.com/fx-kirin/fstrings-rust"
+homepage = "https://crates.io/crates/fstrings-rust"
 
 readme = "README.md"
 description = "Python3 fstring interpolation in Rust"

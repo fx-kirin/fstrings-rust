@@ -94,7 +94,7 @@ mk_macros! { @with_dollar![$]=>
     ,
     #[doc = "Shorthand for [`error!(format_f!`]."]
     error_f
-    =>error!(...)
+        => error!(...)
     ,
     #[doc = "Shorthand for [`warn!(format_f!`]."]
     warn_f
